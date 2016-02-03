@@ -16,6 +16,20 @@
 
 @implementation KVICustomLaunchScreenWindow
 
+#pragma mark - Initialization
+
+- (instancetype)initWithLaunchController:(UIViewController *)launchController {
+    self = [super initWithFrame:[UIScreen mainScreen].bounds];
+    
+    if (self != nil) {
+        _launchScreenViewController = launchController;
+    }
+    
+    return self;
+}
+
+#pragma mark - Override
+
 - (void)becomeKeyWindow {
     [self showLaunchScreenAndCacheRootController];
 }

@@ -13,6 +13,8 @@
 @property (nonatomic, strong) UIViewController *launchScreenViewController;
 @property (nonatomic, strong) NSString *storyboardName;
 
+- (instancetype)initWithLaunchController:(UIViewController *)launchController;
+
 - (void)endDispalyingLaunchScreen;
 
 @end
