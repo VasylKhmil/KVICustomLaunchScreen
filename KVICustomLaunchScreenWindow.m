@@ -44,10 +44,34 @@
             self.initialViewController = [mainStoryboard instantiateInitialViewController];
         }
     }
-    self.rootViewController = self.initialViewController;
+    
+    
+    [self swapScreenToInitial];
 }
 
 #pragma mark - Private
+
+- (void)swapScreenToInitial {
+    
+    [UIView animateWithDuration:0.2
+     
+                     animations:^{
+                         self.alpha = 0;
+                     }
+     
+                     completion:^(BOOL finished) {
+                         
+                         self.rootViewController = self.initialViewController;
+                         
+                         [UIView animateWithDuration:0.2
+                          
+                                          animations:^{
+                                              self.alpha = 1;
+                                          }];
+                         
+                     }];
+    
+}
 
 - (void)showLaunchScreenAndCacheRootController {
     if (self.launchScreenViewController != nil) {
