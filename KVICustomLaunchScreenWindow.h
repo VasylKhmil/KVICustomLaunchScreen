@@ -15,6 +15,6 @@
 
 - (instancetype)initWithLaunchController:(UIViewController *)launchController;
 
-- (void)endDispalyingLaunchScreen;
+- (void)endDispalyingLaunchScreenWithPreparation:(void (^)())preparation completion:(void (^)())completion;
 
 @end

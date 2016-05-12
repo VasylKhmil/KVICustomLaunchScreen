@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) UIViewController *initialViewController;
 
+@property (nonatomic) BOOL workFinished;
+
 @end
 
 @implementation KVICustomLaunchScreenWindow
@@ -31,12 +33,14 @@
 #pragma mark - Override
 
 - (void)becomeKeyWindow {
-    [self showLaunchScreenAndCacheRootController];
+    if (!self.workFinished) {
+        [self showLaunchScreenAndCacheRootController];
+    }
 }
 
 #pragma mark - Public
 
-- (void)endDispalyingLaunchScreen {
+- (void)endDispalyingLaunchScreenWithPreparation:(void (^)())preparation completion:(void (^)())completion {
     if ([self needToUseInitialViewControllerFromStoryboard]) {
         UIStoryboard *mainStoryboard = [self mainStoryboard];
         
@@ -46,30 +50,50 @@
     }
     
     
-    [self swapScreenToInitial];
+    [self swapScreenToInitialWithPreparation:preparation completion:completion];
 }
 
 #pragma mark - Private
 
-- (void)swapScreenToInitial {
+- (void)swapScreenToInitialWithPreparation:(void (^)())preparation completion:(void (^)())completion {
     
-    [UIView animateWithDuration:0.2
+    void (^showInitialControllerAnimationBlock)() = ^{
+        
+        [UIView animateWithDuration:0.5
+         
+                         animations:^{
+                             self.alpha = 1;
+                         }
+         
+                         completion:^(BOOL finished) {
+                             if (completion != nil) {
+                                 completion();
+                             }
+                         }
+         ];
+    };
+    
+    void (^swappControllersAnimationBlock)(BOOL finished) = ^(BOOL finished) {
+        self.rootViewController = self.initialViewController;
+        
+        self.workFinished = TRUE;
+        
+        [self makeKeyAndVisible];
+        
+        if (preparation != nil) {
+            preparation();
+        }
+        
+        showInitialControllerAnimationBlock();
+    };
+    
+    [UIView animateWithDuration:0.5
      
                      animations:^{
                          self.alpha = 0;
                      }
      
-                     completion:^(BOOL finished) {
-                         
-                         self.rootViewController = self.initialViewController;
-                         
-                         [UIView animateWithDuration:0.2
-                          
-                                          animations:^{
-                                              self.alpha = 1;
-                                          }];
-                         
-                     }];
+                     completion:swappControllersAnimationBlock ];
     
 }
 

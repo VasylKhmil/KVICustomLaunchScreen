@@ -10,6 +10,6 @@
 
 @interface UIViewController (KVICustomLaunchScreen)
 
-- (void)kvi_endDispalyingAsLaunchScreen;
+- (void)kvi_endDispalyingAsLaunchScreenWithPreparation:(void (^)())preparation completion:(void (^)())completion;
 
 @end

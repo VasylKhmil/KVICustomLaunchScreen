@@ -11,10 +11,10 @@
 
 @implementation UIViewController (KVICustomLaunchScreen)
 
-- (void)kvi_endDispalyingAsLaunchScreen {
+- (void)kvi_endDispalyingAsLaunchScreenWithPreparation:(void (^)())preparation completion:(void (^)())completion {
     
     KVICustomLaunchScreenWindow *launchScreenWindow = [self launchScreenDispayingWindow];
-    [launchScreenWindow endDispalyingLaunchScreen];
+    [launchScreenWindow endDispalyingLaunchScreenWithPreparation:preparation completion:completion];
 }
 
 #pragma mark - Private
